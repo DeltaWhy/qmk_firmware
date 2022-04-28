@@ -13,9 +13,12 @@ void st7565_task_user(void) {
 			st7565_write_P(PSTR("Tarmak-1b\n"), false);
 			break;
 		case 2:
-			st7565_write_P(PSTR("Colemak-DH\n"), false);
+			st7565_write_P(PSTR("Tarmak-2b\n"), false);
 			break;
 		case 3:
+			st7565_write_P(PSTR("Colemak-DH\n"), false);
+			break;
+		case 4:
 			st7565_write_P(PSTR("Game\n"), false);
 			break;
 		default:
@@ -25,13 +28,13 @@ void st7565_task_user(void) {
 	switch (get_highest_layer(layer_state)) {
 		case 0:
 			break;
-		case 4:
+		case 5:
 			st7565_write_P(PSTR("Game Flipped\n"), false);
 			break;
-		case 5:
+		case 6:
 			st7565_write_P(PSTR("Symbol\n"), false);
 			break;
-		case 6:
+		case 7:
 			st7565_write_P(PSTR("Mouse & Media\n"), false);
 			break;
 		default:
