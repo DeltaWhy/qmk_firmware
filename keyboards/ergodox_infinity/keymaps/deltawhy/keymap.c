@@ -10,7 +10,7 @@ void st7565_task_user(void) {
 			st7565_write_P(PSTR("Default\n"), false);
 			break;
 		case 1:
-			st7565_write_P(PSTR("Tarmak-1b\n"), false);
+			st7565_write_P(PSTR("Tarmak-3\n"), false);
 			break;
 		case 2:
 			st7565_write_P(PSTR("Tarmak-2b\n"), false);
