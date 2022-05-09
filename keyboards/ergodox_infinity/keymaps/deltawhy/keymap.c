@@ -1,5 +1,16 @@
 #include "keymap_gen.c"
 
+void post_process_record_user(uint16_t keycode, keyrecord_t *record) {
+	switch (keycode) {
+		case DF(0) ... DF(0xFF):
+			// persist default layer changes
+			if (record->event.pressed) {
+				set_single_persistent_default_layer(keycode & 0xFF);
+			}
+			return;
+	}
+}
+
 #ifdef ST7565_ENABLE
 void st7565_task_user(void) {
 	// Host Keyboard Layer Status
