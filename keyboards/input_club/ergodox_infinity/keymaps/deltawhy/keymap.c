@@ -21,10 +21,10 @@ void st7565_task_user(void) {
 			st7565_write_P(PSTR("Default\n"), false);
 			break;
 		case 1:
-			st7565_write_P(PSTR("Tarmak-3\n"), false);
+			st7565_write_P(PSTR("Miryoku\n"), false);
 			break;
 		case 2:
-			st7565_write_P(PSTR("Tarmak-4\n"), false);
+			st7565_write_P(PSTR("Qwertyoku\n"), false);
 			break;
 		case 3:
 			st7565_write_P(PSTR("Colemak-DH\n"), false);
@@ -47,6 +47,24 @@ void st7565_task_user(void) {
 			break;
 		case 7:
 			st7565_write_P(PSTR("Mouse & Media\n"), false);
+			break;
+		case 8:
+			st7565_write_P(PSTR("Media\n"), false);
+			break;
+		case 9:
+			st7565_write_P(PSTR("Nav\n"), false);
+			break;
+		case 10:
+			st7565_write_P(PSTR("Mouse\n"), false);
+			break;
+		case 11:
+			st7565_write_P(PSTR("Symbol\n"), false);
+			break;
+		case 12:
+			st7565_write_P(PSTR("Number\n"), false);
+			break;
+		case 13:
+			st7565_write_P(PSTR("Function\n"), false);
 			break;
 		default:
 			// Or use the write_ln shortcut over adding '\n' to the end of your string
