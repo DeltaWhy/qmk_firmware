@@ -4,6 +4,7 @@
 #define EE_HANDS
 #define HOLD_ON_OTHER_KEY_PRESS_PER_KEY
 #define SPLIT_LAYER_STATE_ENABLE
+#define BOTH_SHIFTS_TURNS_ON_CAPS_WORD
 
 #include "../../config.h"
 
