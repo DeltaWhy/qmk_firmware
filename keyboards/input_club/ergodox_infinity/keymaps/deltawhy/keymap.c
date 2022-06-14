@@ -1,5 +1,25 @@
 #include "keymap_gen.c"
 
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    if (record->event.pressed) {
+	switch (keycode) {
+	    case KC_COLN:
+		if ((get_mods() & MOD_MASK_SHIFT)) {
+		    uint8_t mods = get_mods();
+		    clear_mods();
+		    register_code(KC_SCLN);
+		    set_mods(mods);
+		    return false;
+		} else {
+		    return true;
+		}
+	    default:
+		return true;
+	}
+    }
+    return true;
+}
+
 void post_process_record_user(uint16_t keycode, keyrecord_t *record) {
 	switch (keycode) {
 		case DF(0) ... DF(0xFF):
@@ -9,6 +29,19 @@ void post_process_record_user(uint16_t keycode, keyrecord_t *record) {
 			}
 			return;
 	}
+}
+
+bool get_hold_on_other_key_press(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case LCTL_T(KC_ESC):
+	case KC_LSPO:
+	case KC_RSPC:
+            // Immediately select the hold action when another key is tapped.
+            return true;
+        default:
+            // Do not select the hold action when another key is tapped.
+            return false;
+    }
 }
 
 #ifdef ST7565_ENABLE
