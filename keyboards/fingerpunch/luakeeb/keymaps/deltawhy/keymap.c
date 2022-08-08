@@ -39,7 +39,7 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
       if (clockwise) {
       #endif
         switch (get_highest_layer(layer_state)) {
-            case NAV:
+            case 3:  // NAV
                 tap_code(KC_RGHT);
                 break;
             default:
@@ -47,7 +47,7 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
         }
       } else {
         switch (get_highest_layer(layer_state)) {
-            case NAV:
+            case 3:  // NAV
                 tap_code(KC_LEFT);
                 break;
             default:
@@ -139,28 +139,28 @@ bool oled_task_user(void) {
     // oled_write_P(PSTR("Layer: "), false);
 
     switch (get_highest_layer(layer_state)) {
-        case BASE:
+        case 0:
             oled_write_P(PSTR("Default\n"), false);
             break;
-        case BUTTON:
+        case 1:
             oled_write_P(PSTR("Button\n"), false);
             break;
-        case MEDIA:
+        case 2:
             oled_write_P(PSTR("Media\n"), false);
             break;
-        case NAV:
+        case 3:
             oled_write_P(PSTR("Navigation\n"), false);
             break;
-        case MOUSE:
+        case 4:
             oled_write_P(PSTR("Mouse\n"), false);
             break;
-        case SYM:
+        case 5:
             oled_write_P(PSTR("Symbol\n"), false);
             break;
-        case NUM:
+        case 6:
             oled_write_P(PSTR("Number\n"), false);
             break;
-        case FUN:
+        case 7:
             oled_write_P(PSTR("Function\n"), false);
             break;
         default:
