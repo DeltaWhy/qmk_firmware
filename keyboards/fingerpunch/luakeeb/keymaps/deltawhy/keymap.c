@@ -125,3 +125,69 @@ bool get_hold_on_other_key_press(uint16_t keycode, keyrecord_t *record) {
             return false;
     }
 }
+
+#ifdef OLED_ENABLE
+oled_rotation_t oled_init_user(oled_rotation_t rotation) {
+    if (is_keyboard_master()) {
+        return OLED_ROTATION_90;  // flips the display 180 degrees if offhand
+    }
+
+    return OLED_ROTATION_270;
+}
+bool oled_task_user(void) {
+    // Host Keyboard Layer Status
+    // oled_write_P(PSTR("Layer: "), false);
+
+    switch (get_highest_layer(layer_state)) {
+        case BASE:
+            oled_write_P(PSTR("Default\n"), false);
+            break;
+        case BUTTON:
+            oled_write_P(PSTR("Button\n"), false);
+            break;
+        case MEDIA:
+            oled_write_P(PSTR("Media\n"), false);
+            break;
+        case NAV:
+            oled_write_P(PSTR("Navigation\n"), false);
+            break;
+        case MOUSE:
+            oled_write_P(PSTR("Mouse\n"), false);
+            break;
+        case SYM:
+            oled_write_P(PSTR("Symbol\n"), false);
+            break;
+        case NUM:
+            oled_write_P(PSTR("Number\n"), false);
+            break;
+        case FUN:
+            oled_write_P(PSTR("Function\n"), false);
+            break;
+        default:
+            // Or use the write_ln shortcut over adding '\n' to the end of your string
+            oled_write_ln_P(PSTR("Undefined"), false);
+    }
+
+    if ((get_mods() & MOD_MASK_SHIFT)) oled_write_P("S", false);
+    if ((get_mods() & MOD_MASK_CTRL)) oled_write_P("C", false);
+    if ((get_mods() & MOD_BIT(KC_LALT))) oled_write_P("A", false);
+    if ((get_mods() & MOD_BIT(KC_RALT))) oled_write_P("a", false);
+    if ((get_mods() & MOD_MASK_GUI)) oled_write_P("G", false);
+    if (caps_word_enabled()) oled_write_P("W", false);
+    oled_write_P("\n", false);
+
+    // Host Keyboard LED Status
+    led_t led_state = host_keyboard_led_state();
+    oled_write_P(led_state.num_lock ? PSTR("NUM ") : PSTR("    "), false);
+    oled_write_P(led_state.caps_lock ? PSTR("CAP ") : PSTR("    "), false);
+    oled_write_P(led_state.scroll_lock ? PSTR("SCR ") : PSTR("    "), false);
+    
+    return false;
+}
+#endif
+
+#ifdef POINTING_DEVICE_ENABLE
+void pointing_device_init_user(void) {
+    pointing_device_set_cpi(768);
+}
+#endif
