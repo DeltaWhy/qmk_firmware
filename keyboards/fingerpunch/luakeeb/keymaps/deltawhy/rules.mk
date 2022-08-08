@@ -7,6 +7,10 @@ EXTRAKEY_ENABLE = yes # Audio control and System control
 AUTO_SHIFT_ENABLE = yes # Auto Shift
 BOOTMAGIC_ENABLE = yes
 CASEMODES_ENABLE = yes
+OLED_ENABLE = yes
+OLED_DRIVER = SSD1306
+POINTING_DEVICE_ENABLE = yes
+POINTING_DEVICE_DRIVER = cirque_pinnacle_i2c
 
 SRC += users/manna-harbour_miryoku/manna-harbour_miryoku.c users/sadekbaroudi/casemodes.c # keymap
 
