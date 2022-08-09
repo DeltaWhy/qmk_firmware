@@ -7,7 +7,9 @@
 #ifdef CASEMODES_ENABLE
 #include "users/sadekbaroudi/casemodes.h"
 #endif
+
 #include "users/manna-harbour_miryoku/manna-harbour_miryoku.h"
+
 #ifdef ENCODER_ENABLE
 bool encoder_update_user(uint8_t index, bool clockwise) {
     // default behavior if undefined

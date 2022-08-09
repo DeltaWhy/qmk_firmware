@@ -1,9 +1,15 @@
 # Copyright 2019 Manna Harbour
 # https://github.com/manna-harbour/miryoku
 # generated -*- buffer-read-only: t -*-
+CONVERT_TO = stemcell
+# BOOTLOADER = stm32-dfu
+# FIRMWARE_FORMAT = bin
+SERIAL_DRIVER = bitbang
 
 include users/manna-harbour_miryoku/rules.mk
 
+BOOTMAGIC_ENABLE = yes
+CONSOLE_ENABLE = yes
 MOUSEKEY_ENABLE = yes # Mouse keys
 EXTRAKEY_ENABLE = yes # Audio control and System control
 AUTO_SHIFT_ENABLE = yes # Auto Shift
@@ -14,8 +20,9 @@ OLED_DRIVER = SSD1306
 POINTING_DEVICE_ENABLE = yes
 POINTING_DEVICE_DRIVER = cirque_pinnacle_i2c
 INTROSPECTION_KEYMAP_C = users/manna-harbour_miryoku/manna-harbour_miryoku.c
+RGBLIGHT_ENABLE = no
 
-SRC += users/manna-harbour_miryoku/manna-harbour_miryoku.c users/sadekbaroudi/casemodes.c # keymap
+SRC += users/sadekbaroudi/casemodes.c # keymap
 
 # alternative layouts:
 
