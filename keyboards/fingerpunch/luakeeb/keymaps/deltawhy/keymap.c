@@ -1,0 +1,204 @@
+// Copyright 2022 Manna Harbour
+// https://github.com/manna-harbour/miryoku
+
+// This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 2 of the License, or (at your option) any later version. This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details. You should have received a copy of the GNU General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+#include QMK_KEYBOARD_H
+#ifdef CASEMODES_ENABLE
+#include "users/sadekbaroudi/casemodes.h"
+#endif
+#include "users/manna-harbour_miryoku/manna-harbour_miryoku.h"
+enum layers { MIRYOKU_LAYER_NAMES };
+const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
+  [BASE]   = U_MACRO_VA_ARGS(LAYOUT_miryoku, MIRYOKU_LAYER_BASE),
+  [NAV]    = U_MACRO_VA_ARGS(LAYOUT_miryoku, MIRYOKU_LAYER_NAV),
+  [MOUSE]  = U_MACRO_VA_ARGS(LAYOUT_miryoku, MIRYOKU_LAYER_MOUSE),
+  [MEDIA]  = U_MACRO_VA_ARGS(LAYOUT_miryoku, MIRYOKU_LAYER_MEDIA),
+  [NUM]    = U_MACRO_VA_ARGS(LAYOUT_miryoku, MIRYOKU_LAYER_NUM),
+  [SYM]    = U_MACRO_VA_ARGS(LAYOUT_miryoku, MIRYOKU_LAYER_SYM),
+  [FUN]    = U_MACRO_VA_ARGS(LAYOUT_miryoku, MIRYOKU_LAYER_FUN),
+  [BUTTON] = U_MACRO_VA_ARGS(LAYOUT_miryoku, MIRYOKU_LAYER_BUTTON)
+};
+#ifdef ENCODER_ENABLE
+bool encoder_update_user(uint8_t index, bool clockwise) {
+    // default behavior if undefined
+    if (index == 0) {
+        // Conditional to reverse the direction of encoder number 1
+        // The reason I have this is that for some of my boards, it supports two different types of encoders, and they may differ in direction
+        #ifdef ENCODERS_A_REVERSE
+        if (!clockwise) {
+        #else
+        if (clockwise) {
+        #endif
+            switch (get_highest_layer(layer_state)) {
+                default:
+                    tap_code(KC_VOLU);
+            }
+        } else {
+            switch (get_highest_layer(layer_state)) {
+                default:
+                    tap_code(KC_VOLD);
+            }
+        }
+    }
+    else if (index == 1) {
+      // Conditional to reverse the direction of encoder number 1
+      // The reason I have this is that for some of my boards, it supports two different types of encoders, and they may differ in direction
+      #ifdef ENCODERS_B_REVERSE
+      if (!clockwise) {
+      #else
+      if (clockwise) {
+      #endif
+        switch (get_highest_layer(layer_state)) {
+            case NAV:
+                tap_code(KC_RGHT);
+                break;
+            default:
+                tap_code(KC_WH_D);
+        }
+      } else {
+        switch (get_highest_layer(layer_state)) {
+            case NAV:
+                tap_code(KC_LEFT);
+                break;
+            default:
+                tap_code(KC_WH_U);
+        }
+      }
+    }
+
+    return true;
+}
+#endif
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    #ifdef CASEMODES_ENABLE
+    // Process case modes
+    if (!process_case_modes(keycode, record)) {
+        return false;
+    }
+#ifndef NO_ACTION_ONESHOT
+    const uint8_t mods = get_mods() | get_oneshot_mods();
+#else
+    const uint8_t mods = get_mods();
+#endif // NO_ACTION_ONESHOT
+    if (!caps_word_enabled()) {
+#ifdef BOTH_SHIFTS_TURNS_ON_CAPS_WORD
+        // Many keyboards enable the Command feature by default, which also
+        // uses left+right shift. It can be configured to use a different
+        // key combination by defining IS_COMMAND(). We make a non-fatal
+        // warning if Command is enabled but IS_COMMAND() is *not* defined.
+#    if defined(COMMAND_ENABLE) && !defined(IS_COMMAND)
+#        pragma message "BOTH_SHIFTS_TURNS_ON_CAPS_WORD and Command should not be enabled at the same time, since both use the Left Shift + Right Shift key combination. Please disable Command, or ensure that `IS_COMMAND` is not set to (get_mods() == MOD_MASK_SHIFT)."
+#    else
+        if (mods == MOD_MASK_SHIFT
+#        ifdef COMMAND_ENABLE
+            // Don't activate Caps Word at the same time as Command.
+            && !(IS_COMMAND())
+#        endif // COMMAND_ENABLE
+        ) {
+            clear_mods();
+            enable_caps_word();
+            return false;
+        }
+#    endif     // defined(COMMAND_ENABLE) && !defined(IS_COMMAND)
+#endif         // BOTH_SHIFTS_TURNS_ON_CAPS_WORD
+    }
+    #endif
+    if (record->event.pressed) {
+	switch (keycode) {
+	    case KC_COLN:
+		if ((get_mods() & MOD_MASK_SHIFT)) {
+		    uint8_t mods = get_mods();
+		    clear_mods();
+		    register_code(KC_SCLN);
+		    set_mods(mods);
+		    return false;
+		} else {
+		    return true;
+		}
+	    default:
+		return true;
+	}
+    }
+    return true;
+}
+
+bool get_hold_on_other_key_press(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case LCTL_T(KC_ESC):
+	case KC_LSPO:
+	case KC_RSPC:
+            // Immediately select the hold action when another key is tapped.
+            return true;
+        default:
+            // Do not select the hold action when another key is tapped.
+            return false;
+    }
+}
+
+#ifdef OLED_ENABLE
+oled_rotation_t oled_init_user(oled_rotation_t rotation) {
+    if (is_keyboard_master()) {
+        return OLED_ROTATION_90;  // flips the display 180 degrees if offhand
+    }
+
+    return OLED_ROTATION_270;
+}
+bool oled_task_user(void) {
+    // Host Keyboard Layer Status
+    // oled_write_P(PSTR("Layer: "), false);
+
+    switch (get_highest_layer(layer_state)) {
+        case BASE:
+            oled_write_P(PSTR("Default\n"), false);
+            break;
+        case BUTTON:
+            oled_write_P(PSTR("Button\n"), false);
+            break;
+        case MEDIA:
+            oled_write_P(PSTR("Media\n"), false);
+            break;
+        case NAV:
+            oled_write_P(PSTR("Navigation\n"), false);
+            break;
+        case MOUSE:
+            oled_write_P(PSTR("Mouse\n"), false);
+            break;
+        case SYM:
+            oled_write_P(PSTR("Symbol\n"), false);
+            break;
+        case NUM:
+            oled_write_P(PSTR("Number\n"), false);
+            break;
+        case FUN:
+            oled_write_P(PSTR("Function\n"), false);
+            break;
+        default:
+            // Or use the write_ln shortcut over adding '\n' to the end of your string
+            oled_write_ln_P(PSTR("Undefined"), false);
+    }
+
+    if ((get_mods() & MOD_MASK_SHIFT)) oled_write_P("S", false);
+    if ((get_mods() & MOD_MASK_CTRL)) oled_write_P("C", false);
+    if ((get_mods() & MOD_BIT(KC_LALT))) oled_write_P("A", false);
+    if ((get_mods() & MOD_BIT(KC_RALT))) oled_write_P("a", false);
+    if ((get_mods() & MOD_MASK_GUI)) oled_write_P("G", false);
+    if (caps_word_enabled()) oled_write_P("W", false);
+    oled_write_P("\n", false);
+
+    // Host Keyboard LED Status
+    led_t led_state = host_keyboard_led_state();
+    oled_write_P(led_state.num_lock ? PSTR("NUM ") : PSTR("    "), false);
+    oled_write_P(led_state.caps_lock ? PSTR("CAP ") : PSTR("    "), false);
+    oled_write_P(led_state.scroll_lock ? PSTR("SCR ") : PSTR("    "), false);
+    
+    return false;
+}
+#endif
+
+#ifdef POINTING_DEVICE_ENABLE
+void pointing_device_init_user(void) {
+    pointing_device_set_cpi(768);
+}
+#endif
