@@ -8,6 +8,10 @@ for more options.
 // #define MASTER_LEFT
 // #define MASTER_RIGHT
 #define EE_HANDS
+#define BOOTMAGIC_LITE_ROW 0
+#define BOOTMAGIC_LITE_COLUMN 1
+#define BOOTMAGIC_LITE_ROW_RIGHT 4
+#define BOOTMAGIC_LITE_COLUMN_RIGHT 1
 
 //#define TAPPING_TERM 170
 #define TAPPING_TERM 170
@@ -30,6 +34,8 @@ for more options.
 //#define NO_MUSIC_MODE
 
 #define COMBO_COUNT 1
+
+#define SPLIT_HAPTIC_ENABLE
 
 
 // RGB matrix support

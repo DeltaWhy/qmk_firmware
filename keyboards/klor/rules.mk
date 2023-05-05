@@ -16,8 +16,6 @@ ENCODER_ENABLE = yes
 
 #HAPTIC FEEDBACK
 HAPTIC_DRIVER = DRV2605L
-HAPTIC_ENABLE = yes
-BOOTMAGIC_ENABLE = yes
 
 #PER KEY RGB
 BACKLIGHT_ENABLE = no       # Enable keyboard backlight functionality

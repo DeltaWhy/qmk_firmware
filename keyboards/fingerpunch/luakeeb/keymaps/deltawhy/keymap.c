@@ -7,17 +7,47 @@
 #ifdef CASEMODES_ENABLE
 #include "users/sadekbaroudi/casemodes.h"
 #endif
+
 #include "users/manna-harbour_miryoku/manna-harbour_miryoku.h"
+enum {
+    U_TD_BOOT,
+#define MIRYOKU_X(LAYER, STRING) U_TD_U_##LAYER,
+MIRYOKU_LAYER_LIST
+#undef MIRYOKU_X
+};
+
+void u_td_fn_boot(tap_dance_state_t *state, void *user_data) {
+  if (state->count == 2) {
+    reset_keyboard();
+  }
+}
+
+#define MIRYOKU_X(LAYER, STRING) \
+void u_td_fn_U_##LAYER(tap_dance_state_t *state, void *user_data) { \
+  if (state->count == 2) { \
+    default_layer_set((layer_state_t)1 << U_##LAYER); \
+  } \
+}
+MIRYOKU_LAYER_LIST
+#undef MIRYOKU_X
+
+tap_dance_action_t tap_dance_actions[] = {
+    [U_TD_BOOT] = ACTION_TAP_DANCE_FN(u_td_fn_boot),
+#define MIRYOKU_X(LAYER, STRING) [U_TD_U_##LAYER] = ACTION_TAP_DANCE_FN(u_td_fn_U_##LAYER),
+MIRYOKU_LAYER_LIST
+#undef MIRYOKU_X
+};
+
 enum layers { MIRYOKU_LAYER_NAMES };
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-  [BASE]   = U_MACRO_VA_ARGS(LAYOUT_miryoku, MIRYOKU_LAYER_BASE),
-  [NAV]    = U_MACRO_VA_ARGS(LAYOUT_miryoku, MIRYOKU_LAYER_NAV),
-  [MOUSE]  = U_MACRO_VA_ARGS(LAYOUT_miryoku, MIRYOKU_LAYER_MOUSE),
-  [MEDIA]  = U_MACRO_VA_ARGS(LAYOUT_miryoku, MIRYOKU_LAYER_MEDIA),
-  [NUM]    = U_MACRO_VA_ARGS(LAYOUT_miryoku, MIRYOKU_LAYER_NUM),
-  [SYM]    = U_MACRO_VA_ARGS(LAYOUT_miryoku, MIRYOKU_LAYER_SYM),
-  [FUN]    = U_MACRO_VA_ARGS(LAYOUT_miryoku, MIRYOKU_LAYER_FUN),
-  [BUTTON] = U_MACRO_VA_ARGS(LAYOUT_miryoku, MIRYOKU_LAYER_BUTTON)
+  [U_BASE]   = U_MACRO_VA_ARGS(LAYOUT_miryoku, MIRYOKU_LAYER_BASE),
+  [U_NAV]    = U_MACRO_VA_ARGS(LAYOUT_miryoku, MIRYOKU_LAYER_NAV),
+  [U_MOUSE]  = U_MACRO_VA_ARGS(LAYOUT_miryoku, MIRYOKU_LAYER_MOUSE),
+  [U_MEDIA]  = U_MACRO_VA_ARGS(LAYOUT_miryoku, MIRYOKU_LAYER_MEDIA),
+  [U_NUM]    = U_MACRO_VA_ARGS(LAYOUT_miryoku, MIRYOKU_LAYER_NUM),
+  [U_SYM]    = U_MACRO_VA_ARGS(LAYOUT_miryoku, MIRYOKU_LAYER_SYM),
+  [U_FUN]    = U_MACRO_VA_ARGS(LAYOUT_miryoku, MIRYOKU_LAYER_FUN),
+  [U_BUTTON] = U_MACRO_VA_ARGS(LAYOUT_miryoku, MIRYOKU_LAYER_BUTTON)
 };
 #ifdef ENCODER_ENABLE
 bool encoder_update_user(uint8_t index, bool clockwise) {
@@ -50,7 +80,7 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
       if (clockwise) {
       #endif
         switch (get_highest_layer(layer_state)) {
-            case NAV:
+            case U_NAV:
                 tap_code(KC_RGHT);
                 break;
             default:
@@ -58,7 +88,7 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
         }
       } else {
         switch (get_highest_layer(layer_state)) {
-            case NAV:
+            case U_NAV:
                 tap_code(KC_LEFT);
                 break;
             default:
@@ -127,8 +157,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 bool get_hold_on_other_key_press(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
         case LCTL_T(KC_ESC):
-	case KC_LSPO:
-	case KC_RSPC:
+	case SC_LSPO:
+	case SC_RSPC:
             // Immediately select the hold action when another key is tapped.
             return true;
         default:
@@ -150,28 +180,28 @@ bool oled_task_user(void) {
     // oled_write_P(PSTR("Layer: "), false);
 
     switch (get_highest_layer(layer_state)) {
-        case BASE:
+        case U_BASE:
             oled_write_P(PSTR("Default\n"), false);
             break;
-        case BUTTON:
+        case U_BUTTON:
             oled_write_P(PSTR("Button\n"), false);
             break;
-        case MEDIA:
+        case U_MEDIA:
             oled_write_P(PSTR("Media\n"), false);
             break;
-        case NAV:
+        case U_NAV:
             oled_write_P(PSTR("Navigation\n"), false);
             break;
-        case MOUSE:
+        case U_MOUSE:
             oled_write_P(PSTR("Mouse\n"), false);
             break;
-        case SYM:
+        case U_SYM:
             oled_write_P(PSTR("Symbol\n"), false);
             break;
-        case NUM:
+        case U_NUM:
             oled_write_P(PSTR("Number\n"), false);
             break;
-        case FUN:
+        case U_FUN:
             oled_write_P(PSTR("Function\n"), false);
             break;
         default:
@@ -192,7 +222,7 @@ bool oled_task_user(void) {
     oled_write_P(led_state.num_lock ? PSTR("NUM ") : PSTR("    "), false);
     oled_write_P(led_state.caps_lock ? PSTR("CAP ") : PSTR("    "), false);
     oled_write_P(led_state.scroll_lock ? PSTR("SCR ") : PSTR("    "), false);
-    
+
     return false;
 }
 #endif
