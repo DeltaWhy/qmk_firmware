@@ -14,10 +14,12 @@ KEY_OVERRIDE_ENABLE = yes
 # OLED_DRIVER = SSD1306
 # POINTING_DEVICE_ENABLE = yes
 # POINTING_DEVICE_DRIVER = cirque_pinnacle_i2c
-# RGBLIGHT_ENABLE = yes
+RGBLIGHT_ENABLE = yes
 ENCODER_ENABLE = yes
 CONVERT_TO = stemcell
 STMC_US = yes
+EEPROM_DRIVER = wear_leveling
+WEAR_LEVELING_DRIVER = legacy
 
 SRC += users/sadekbaroudi/casemodes.c # keymap
 
