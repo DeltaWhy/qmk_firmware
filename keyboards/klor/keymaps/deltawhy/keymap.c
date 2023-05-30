@@ -436,7 +436,8 @@ void matrix_scan_user(void) {
 }
 
 layer_state_t layer_state_set_user(layer_state_t state) {
-    switch (get_highest_layer(layer_state | default_layer_state)) {
+    layer_state_t next_state = update_tri_layer_state(state, _LOWER, _RAISE, _ADJUST);
+    switch (get_highest_layer(next_state | default_layer_state)) {
         case _QWERTY:
             strcpy ( layer_state_str, "BASE QWERTY");
             break;
@@ -458,7 +459,7 @@ layer_state_t layer_state_set_user(layer_state_t state) {
     if (dmacro_num < 1) {
         strcpy ( o_text, layer_state_str );
     }
-    return update_tri_layer_state(state, 1, 2, 3);
+    return next_state;
 }
 
 
