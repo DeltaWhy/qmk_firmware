@@ -45,7 +45,21 @@ QUANTUM_LIB_SRC += spi_master.c
 CUSTOM_MATRIX = lite
 
 AUDIO_ENABLE ?= no
+ifeq ($(strip $(CONVERT_TO)), stemcell)
 AUDIO_DRIVER = pwm_software
+endif
+ifeq ($(strip $(CONVERT_TO)), elite_pi)
+AUDIO_DRIVER = pwm_hardware
+endif
+ifeq ($(strip $(CONVERT_TO)), rp2040_ce)
+AUDIO_DRIVER = pwm_hardware
+endif
+ifeq ($(strip $(CONVERT_TO)), helios)
+AUDIO_DRIVER = pwm_hardware
+endif
+ifeq ($(strip $(CONVERT_TO)), liatris)
+AUDIO_DRIVER = pwm_hardware
+endif
 
 HAPTIC_ENABLE ?= no
 HAPTIC_DRIVER = DRV2605L
@@ -75,6 +89,7 @@ SRC +=  keyboards/fingerpunch/src/fp.c \
         keyboards/fingerpunch/src/fp_haptic.c \
         keyboards/fingerpunch/src/fp_audio.c \
         keyboards/fingerpunch/src/fp_keyhandler.c \
+        keyboards/fingerpunch/src/fp_encoder.c \
         keyboards/fingerpunch/src/fp_pointing.c \
         keyboards/fingerpunch/src/fp_rgb_common.c \
         keyboards/fingerpunch/src/fp_rgblight.c \

@@ -15,15 +15,19 @@
  */
 
 #include "keyboards/fingerpunch/src/fp.h"
+#include "eeconfig.h"
+
+fp_config_t fp_config;
 
 #if defined(RGBLIGHT_ENABLE) || defined(RGB_MATRIX_ENABLE)
 #include "keyboards/fingerpunch/src/fp_rgb_common.h"
 #endif
+#if defined(POINTING_DEVICE_ENABLE)
+#include "keyboards/fingerpunch/src/fp_pointing.h"
+#endif
 #if defined(PIMORONI_TRACKBALL_ENABLE)
 #include "color.h"
 #endif
-
-fp_config_t fp_config;
 
 #ifndef FP_SUPER_TAB_TIMEOUT
 #   define FP_SUPER_TAB_TIMEOUT 500
@@ -132,17 +136,21 @@ void matrix_scan_kb(void) {
 }
 
 void keyboard_pre_init_kb(void) {
-    fp_config.raw = eeconfig_read_user();
+    eeconfig_read_kb_datablock(&fp_config.raw);
     keyboard_pre_init_user();
 }
 
 void keyboard_post_init_kb(void) {
+    #ifdef CONSOLE_ENABLE
+    fp_log_eeprom();
+    #endif
+
     #if defined(PIMORONI_TRACKBALL_ENABLE) && !defined(RGBLIGHT_ENABLE)
     pimoroni_trackball_set_rgbw(RGB_BLUE, 0x00);
     #endif
 
-    #if defined(POINTING_DEVICE_ENABLE) && defined(POINTING_DEVICE_COMBINED)
-    fp_pointing_device_set_cpi_combined_defaults();
+    #if defined(POINTING_DEVICE_ENABLE)
+    fp_apply_dpi();
     #endif
 
     #if defined(RGBLIGHT_ENABLE) || defined(RGB_MATRIX_ENABLE)
@@ -170,6 +178,9 @@ layer_state_t layer_state_set_kb(layer_state_t state) {
 #ifdef RGB_MATRIX_ENABLE
     state = fp_layer_state_set_rgb_matrix(state);
 #endif  // RGB_MATRIX_ENABLE
+#ifdef ENCODER_ENABLE
+    state = fp_layer_state_set_encoder(state);
+#endif  // ENCODER_ENABLE
 #ifdef HAPTIC_ENABLE
     state = fp_layer_state_set_haptic(state);
 #endif  // HAPTIC_ENABLE
@@ -192,6 +203,30 @@ void eeconfig_init_kb(void) {
     fp_config.rgb_sat          = 255;
     fp_config.rgb_val          = 255;
     fp_config.rgb_speed        = 1;
-    eeconfig_update_kb(fp_config.raw);
+    #ifdef POINTING_DEVICE_ENABLE
+    fp_config.pointing_dpi = FP_POINTING_DEFAULT_DPI;
+    fp_config.sniping_dpi = FP_POINTING_SNIPING_DPI;
+    fp_config.scrolling_dpi = FP_POINTING_SCROLLING_DPI;
+    #endif
+    eeconfig_update_kb_datablock(&fp_config.raw);
     eeconfig_init_user();
 }
+
+#ifdef CONSOLE_ENABLE
+void fp_log_eeprom() {
+    xprintf("fp_log_eeprom\n");
+    xprintf("fp_config.raw = '%llu'\n", fp_config.raw);
+    #if defined(RGBLIGHT_ENABLE) || defined(RGB_MATRIX_ENABLE)
+    xprintf("fp_config.rgb_mode = '%u'\n", fp_config.rgb_mode);
+    xprintf("fp_config.rgb_hue = '%u'\n", fp_config.rgb_hue);
+    xprintf("fp_config.rgb_sat = '%u'\n", fp_config.rgb_sat);
+    xprintf("fp_config.rgb_val = '%u'\n", fp_config.rgb_val);
+    xprintf("fp_config.rgb_speed = '%u'\n", fp_config.rgb_speed);
+    #endif
+    #ifdef POINTING_DEVICE_ENABLE
+    xprintf("fp_config.pointing_dpi = '%u'\n", fp_config.pointing_dpi);
+    xprintf("fp_config.sniping_dpi = '%u'\n", fp_config.sniping_dpi);
+    xprintf("fp_config.scrolling_dpi = '%u'\n", fp_config.scrolling_dpi);
+    #endif
+}
+#endif

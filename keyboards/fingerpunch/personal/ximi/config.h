@@ -17,6 +17,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #pragma once
 
+#include "keyboards/fingerpunch/src/config.h"
+
 /* key matrix size */
 // Rows are doubled-up
 #define MATRIX_ROWS 6
@@ -146,7 +148,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 /* Locking resynchronize hack */
 #define LOCKING_RESYNC_ENABLE
 
-#define I2C_DRIVER I2CD2
+#define I2C_DRIVER I2CD1
 #define I2C1_SDA_PIN GP6
 #define I2C1_SCL_PIN GP7
 
@@ -168,7 +170,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifdef FP_TRACKBALL_ENABLE
     // Trackball config
     #define PMW33XX_CS_PIN GP26
-    #define PMW33XX_CPI 800
     #define PMW33XX_CS_DIVISOR 8 // needs to be the same as the SHIFTREG_DIVISOR above
 
     /* SPI config for pmw3360 sensor. */

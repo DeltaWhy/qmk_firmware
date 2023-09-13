@@ -16,6 +16,8 @@
 
 #pragma once
 
+#include "keyboards/fingerpunch/src/config.h"
+
 /*
  * Keyboard Matrix Assignments
  *
@@ -87,7 +89,7 @@
 #define ENCODERS_PAD_B_RIGHT {D0}
 #endif
 
-#define EE_HANDS
+#define MASTER_LEFT
 
 /* Backwards compatibility with existing out-of-tree keymaps */
 #define LAYOUT_sweeeeep LAYOUT_split_3x5_3

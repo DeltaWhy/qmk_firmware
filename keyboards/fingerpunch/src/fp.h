@@ -25,6 +25,9 @@ void fp_caps_lock_toggle(void);
 void handle_caps_lock_change(void);
 void press_super_tab(bool shift);
 void press_super_ctrl_tab(bool shift);
+#ifdef CONSOLE_ENABLE
+void fp_log_eeprom(void);
+#endif
 
 #include "keyboards/fingerpunch/src/fp_color.h"
 #include "keyboards/fingerpunch/src/fp_keyhandler.h"
@@ -38,6 +41,9 @@ void press_super_ctrl_tab(bool shift);
 #ifdef RGB_MATRIX_ENABLE
 #    include "keyboards/fingerpunch/src/fp_rgb_matrix.h"
 #endif
+#ifdef ENCODER_ENABLE
+#    include "keyboards/fingerpunch/src/fp_encoder.h"
+#endif
 #ifdef HAPTIC_ENABLE
 #    include "keyboards/fingerpunch/src/fp_haptic.h"
 #endif
@@ -50,13 +56,16 @@ void press_super_ctrl_tab(bool shift);
 
 // clang-format off
 typedef union {
-    uint32_t raw;
+    uint64_t raw;
     struct {
-        uint8_t rgb_mode;
-        uint8_t rgb_hue;
-        uint8_t rgb_sat;
-        uint8_t rgb_val;
-        uint8_t rgb_speed;
+        uint8_t rgb_mode :8;
+        uint8_t rgb_hue :8;
+        uint8_t rgb_sat :8;
+        uint8_t rgb_val :8;
+        uint8_t rgb_speed :8;
+        uint8_t pointing_dpi :8;
+        uint8_t sniping_dpi :8;
+        uint8_t scrolling_dpi :8;
     };
 } fp_config_t;
 // clang-format on

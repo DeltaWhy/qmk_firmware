@@ -2,7 +2,7 @@ SRC += sadekbaroudi.c \
        process_records.c
 
 COMMAND_ENABLE   = no  # Commands for debug and configuration
-CONSOLE_ENABLE   = no  # Console for debug
+CONSOLE_ENABLE   = yes  # Console for debug
 UNICODE_ENABLE   = no  # Unicode
 SWAP_HANDS_ENABLE= no  # Allow swapping hands of keyboard
 BACKLIGHT_ENABLE = no
@@ -43,8 +43,9 @@ ifeq ($(strip $(RGB_MATRIX_BAND_VAL_LAYERS)), yes)
     OPT_DEFS += -DRGB_MATRIX_BAND_VAL_LAYERS
 endif
 
-ifeq ($(strip $(ENCODER_ENABLE)), yes)
-    SRC += encoder_stuff.c
+CIRQUE_CURVED_OVERLAY_ENABLE := no
+ifeq ($(strip $(CIRQUE_CURVED_OVERLAY_ENABLE)), yes)
+    OPT_DEFS += -DCIRQUE_CURVED_OVERLAY_ENABLE
 endif
 
 ifeq ($(strip $(CASEMODES_ENABLE)), yes)
@@ -53,5 +54,9 @@ endif
 
 ifeq ($(strip $(COMBO_ENABLE)), yes)
     SRC += combos.c
+endif
+
+ifeq ($(strip $(AUDIO_ENABLE)), yes)
+    SRC += audio_userspace.c
 endif
 

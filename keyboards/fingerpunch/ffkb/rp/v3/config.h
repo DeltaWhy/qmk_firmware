@@ -37,18 +37,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 /* COL2ROW, ROW2COL*/
 #define DIODE_DIRECTION COL2ROW
 
-#define ENCODERS_PAD_A {GP26, GP7}
-#define ENCODERS_PAD_B {GP24, GP8}
-
+#define ENCODERS_PAD_A {GP24, GP8}
+#define ENCODERS_PAD_B {GP26, GP7}
+#define ENCODER_RESOLUTION 4
 
 #ifdef FP_EVQ
 #define ENCODERS_A_REVERSE
 #define ENCODERS_B_REVERSE
 #endif
 
-#ifdef FP_EC11
-#define ENCODERS_C_REVERSE
-#endif
 
 /** add this back into fp_build.json and configure the stuff below
     {
@@ -71,8 +68,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     #endif
 #endif
 
-#define ENCODER_RESOLUTION 2
-
 #ifdef CIRQUE_ENABLE
   // cirque trackpad config
   #define CIRQUE_PINNACLE_ADDR 0x2A
@@ -85,9 +80,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #ifdef FP_TRACKBALL_ENABLE
   // Trackball config
-  #define FP_POINTING_DEFAULT_DPI 800
   #define PMW33XX_CS_PIN GP9
-  #define PMW33XX_CPI FP_POINTING_DEFAULT_DPI
   #define PMW33XX_CS_DIVISOR 8 // needs to be the same as the SHIFTREG_DIVISOR above
   #define POINTING_DEVICE_INVERT_Y
 #endif
@@ -104,7 +97,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     #define FP_AUDIO_MOUSE_BUTTONS
     #define FP_AUDIO_CUT_COPY_PASTE
     #define FP_AUDIO_SAVE
-    #define STARTUP_SONG SONG(STARTUP_SOUND)
+    #define FP_STARTUP_LIGHT HALF_NOTE(_E6), HALF_NOTE(_F6), HALF_NOTE(_C6), WHOLE_NOTE(_A5), WHOLE_DOT_NOTE(_F5),
+    #define STARTUP_SONG SONG(FP_STARTUP_LIGHT)
     #define DEFAULT_LAYER_SONGS \
         { SONG(QWERTY_SOUND), SONG(COLEMAK_SOUND) }
 #endif
@@ -122,5 +116,3 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     #define FP_HAPTIC_CUT_COPY_PASTE
     #define FP_HAPTIC_SAVE
 #endif
-
-

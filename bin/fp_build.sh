@@ -43,6 +43,19 @@ get_valid_keyboards() {
 			if [[ -e "${line}/v${i}/fp_build.json" ]]; then
 			    echo -n "${line}/v${i} "
 			fi
+			
+			# special case for pinkies out v2 extended
+			if [[ -e "${line}/v${i}_ext/fp_build.json" ]]; then
+			    echo -n "${line}/v${i}_ext "
+			fi
+		done
+
+		# special case for tenbit
+		for i in {4..5}
+		do
+			if [[ -e "${line}/${i}x12/fp_build.json" ]]; then
+			    echo -n "${line}/${i}x12 "
+			fi
 		done
 
 		# if we have a second parameter, then we don't want to recurse again
