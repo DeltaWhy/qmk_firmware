@@ -647,7 +647,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 	    case KC_COLN:
 		if ((get_mods() & MOD_MASK_SHIFT)) {
 		    uint8_t mods = get_mods();
-		    clear_mods();
+		    del_mods(MOD_MASK_SHIFT);
 		    register_code(KC_SCLN);
 		    set_mods(mods);
 		    return false;
