@@ -10,19 +10,14 @@
         "user_input": "Do you have a trackball?"
     },
     {
-        "type" : "single",
-        "name" : "RGBLIGHT_ENABLE",
-        "user_input": "Do you have leds for underglow?"
+        "type" : "one-of",
+        "names" : [ "RGBLIGHT_ENABLE", "RGB_MATRIX_ENABLE" ],
+        "user_input": "No RGB, RGB light, RGB matrix?"
     },
     {
         "type" : "single",
         "name" : "FP_VIK_PERS60_MODULE",
         "user_input": "Do you have a scroll wheel VIK module installed with LEDs?"
-    },
-    {
-        "type" : "single",
-        "name" : "ENCODER_ENABLE",
-        "user_input": "Do you have one or more rotary encoders?"
     },
     {
         "type" : "single",
