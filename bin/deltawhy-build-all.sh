@@ -11,3 +11,4 @@ qmk json2c keyboards/input_club/ergodox_infinity/keymaps/deltawhy/deltawhy.json 
 qmk compile -kb input_club/ergodox_infinity -km deltawhy
 qmk compile -kb klor/2040 -km deltawhy
 qmk compile -kb hazel/bad_wings -km deltawhy
+qmk compile -kb dragonfruit02 -km deltawhy
