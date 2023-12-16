@@ -22,4 +22,5 @@
     { K71, K72, K73, K74, K75, K76, K77, K78, K79, K80 } \
   }
 
+// General fingerpunch firmware include
 #include "keyboards/fingerpunch/src/fp.h"
