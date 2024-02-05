@@ -60,13 +60,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_Q,         KC_W,  KC_F,   KC_P,    KC_B,                                           KC_J,          KC_L,          KC_U,     KC_Y,   KC_QUOT,
         GUI_A,        ALT_R, CTL_S,  SHT_T,   KC_G,                                           KC_M,          SHT_N,         CTL_E,    ALT_I,  GUI_O,
         KC_Z,         ALG_X, KC_C,   KC_D,    KC_V,                                           KC_K,          KC_H,          KC_COMMA, ALG_DOT, KC_SLSH,
-                             TT(1),  KC_SPC,  KC_TAB,        KC_MS_BTN1,    SCRL_MO,        KC_ENT,         KC_BSPC,       TT(2)
+                             TT(1),  KC_SPC,  KC_TAB,        SCRL_MO,    KC_MS_BTN1,        KC_ENT,         KC_BSPC,       TT(2)
     ),
     [1] = LAYOUT(
         _______, _______, _______, _______, _______,                         KC_ESC,   _______, _______, _______, _______,
         KC_LGUI, KC_LALT, KC_LCTL, KC_LSFT, _______,                         KC_MINS,  KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT,
         _______, KC_RALT, _______, _______, _______,                         KC_DEL,   KC_HOME, KC_PGDN, KC_PGUP, KC_END,
-                          TG(1),   _______, _______,     _______, _______,   _______,  _______, _______
+                          TG(1),   _______, _______,     KC_MS_BTN2, _______,   _______,  _______, _______
     ),
     [2] = LAYOUT(
         KC_LBRC, KC_7,    KC_8,    KC_9,    KC_RBRC,                         KC_ESC,   _______, _______, _______, _______,
@@ -75,9 +75,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                           _______, KC_0,    KC_DOT,      _______, _______,   _______,  _______, TG(2)
     ),
     [3] = LAYOUT(
-        KC_F12,  KC_F7,   KC_F8,   KC_F9,   KC_PSCR,                         _______,  _______, _______, _______, _______,
-        KC_F11,  KC_F4,   KC_F5,   KC_F6,   KC_SCRL,                         _______,  KC_RSFT, KC_RCTL, KC_LALT, KC_RGUI,
-        KC_F10,  KC_F1,   KC_F2,   KC_F3,   KC_PAUS,                         _______,  _______, _______, KC_RALT, _______,
+        KC_F12,  KC_F7,   KC_F8,   KC_F9,   KC_PSCR,                         CPI_SW,   ROT_L15, ROT_R15, _______, EE_CLR,
+        KC_F11,  KC_F4,   KC_F5,   KC_F6,   KC_SCRL,                         SCRL_SW,  KC_RSFT, KC_RCTL, KC_LALT, KC_RGUI,
+        KC_F10,  KC_F1,   KC_F2,   KC_F3,   KC_PAUS,                         SCRL_IN,  RGB_MOD, RGB_RMOD, KC_RALT, _______,
                           _______, _______, _______,     _______, _______,   _______, _______, _______
     )
 };
@@ -164,3 +164,4 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     }
     return true;
 }
+
