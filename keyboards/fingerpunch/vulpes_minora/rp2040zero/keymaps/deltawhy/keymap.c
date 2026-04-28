@@ -47,7 +47,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         Q_ESC,      KC_W,           KC_F,           KC_P,           KC_B,           KC_J,       KC_L,           KC_U,       KC_Y,       KC_QUOT,      \
         GUI_A,      ALT_R,          CTL_S,          SHT_T,          KC_G,           KC_M,       SHT_N,          CTL_E,      ALT_I,      GUI_O,        \
         KC_Z,       ALG_X,          KC_C,           KC_D,           KC_V,           KC_K,       KC_H,           KC_COMM,    ALG_DOT,    KC_SLSH,      \
-                                    TT(1),          KC_SPC,         KC_TAB,         KC_ENT,     KC_BSPC,        TT(2)
+                                    TT(1),          KC_SPC,         LT(4, KC_TAB),         KC_ENT,     KC_BSPC,        TT(2)
     ),
     [1] = LAYOUT_split_3x5_3(
         KC_TRNS,    KC_TRNS,        KC_TRNS,        KC_TRNS,        KC_TRNS,        KC_ESC,     KC_TRNS,        KC_TRNS,    KC_TRNS,    KC_TRNS,      \
@@ -68,9 +68,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                     KC_TRNS,        KC_TRNS,        KC_TRNS,        KC_TRNS,    KC_TRNS,        KC_TRNS
     ),
     [4] = LAYOUT_split_3x5_3(
-        KC_TRNS,    KC_TRNS,        KC_TRNS,        KC_TRNS,        KC_TRNS,        KC_TRNS,    KC_TRNS,        KC_TRNS,    KC_TRNS,    KC_TRNS,      \
-        KC_TRNS,    KC_BTN3,        KC_BTN2,        KC_BTN1,        KC_TRNS,        KC_BTN1,    KC_BTN2,        KC_BTN3,    KC_TRNS,    KC_TRNS,      \
-        KC_TRNS,    KC_TRNS,        KC_TRNS,        KC_TRNS,        KC_TRNS,        KC_BTN1,    KC_BTN2,        KC_BTN3,    KC_TRNS,    KC_TRNS,      \
+        KC_WH_L,    KC_WH_U,        KC_WH_D,        KC_WH_R,        KC_TRNS,        KC_TRNS,    KC_TRNS,        KC_TRNS,    KC_TRNS,    KC_TRNS,      \
+        KC_TRNS,    KC_BTN3,        KC_BTN2,        KC_BTN1,        KC_BTN5,        KC_BTN1,    KC_BTN2,        KC_BTN3,    KC_TRNS,    KC_TRNS,      \
+        KC_TRNS,    KC_BTN3,        KC_BTN2,        KC_BTN1,        KC_BTN4,        KC_BTN1,    KC_BTN2,        KC_BTN3,    KC_TRNS,    KC_TRNS,      \
                                     KC_TRNS,        KC_TRNS,        KC_TRNS,        KC_BTN1,    KC_BTN2,        KC_BTN3
     ),
 };
